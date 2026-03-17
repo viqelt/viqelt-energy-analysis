@@ -127,7 +127,7 @@ export default function GraphsAnalysis() {
                     padding: "10px 14px",
                   }}
                   labelStyle={{ color: "#64748B", fontSize: 12, marginBottom: 4 }}
-                  formatter={(value: number) => [`${value} W`, "Power"]}
+                  formatter={(value: number) => [`${value} kW`, "Power"]}
                 />
                 <Line
                   type="monotone"
