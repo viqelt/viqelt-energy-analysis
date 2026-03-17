@@ -71,7 +71,7 @@ export default function HomePage() {
         <img
           src="https://mgx-backend-cdn.metadl.com/generate/images/446531/2026-03-17/587c17fb-fa37-421f-b3fb-902bc4805415.png"
           alt="Energy Dashboard"
-          className="kw-full h-full object-cover"
+          className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/80 to-purple-900/60 flex items-center px-6 md:px-8">
           <div>
