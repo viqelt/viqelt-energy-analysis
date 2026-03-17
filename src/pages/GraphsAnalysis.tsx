@@ -188,7 +188,7 @@ export default function GraphsAnalysis() {
                       boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
                       padding: "10px 14px",
                     }}
-                    formatter={(value: number) => [`${value} W`, "Consumption"]}
+                    formatter={(value: number) => [`${value} kW`, "Consumption"]}
                   />
                   <Bar dataKey="consumption" fill="url(#barGradient)" radius={[4, 4, 0, 0]} />
                 </BarChart>
