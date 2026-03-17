@@ -48,11 +48,11 @@ export const getPeakHoursData = () => {
 };
 
 export const getEnergyDistribution = () => [
-  { name: "Region A", value: 30, color: "#FF4D4F", devices: "Microwave, Water Pump" },
-  { name: "Region B", value: 25, color: "#52C41A", devices: "Air Conditioner" },
-  { name: "Region C", value: 15, color: "#1890FF", devices: "Lighting" },
-  { name: "Region D", value: 18, color: "#FAAD14", devices: "Refrigerator" },
-  { name: "Region E", value: 12, color: "#722ED1", devices: "Other Devices" },
+  { name: "Region A", value: 30, color: "#FF1744", devices: "Microwave, Water Pump" },
+  { name: "Region B", value: 25, color: "#00E676", devices: "Air Conditioner" },
+  { name: "Region C", value: 15, color: "#7C4DFF", devices: "Lighting" },
+  { name: "Region D", value: 18, color: "#FFEA00", devices: "Refrigerator" },
+  { name: "Region E", value: 12, color: "#00B0FF", devices: "Other Devices" },
 ];
 
 export const getRealtimePower = () => {
