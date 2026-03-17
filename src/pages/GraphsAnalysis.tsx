@@ -201,7 +201,7 @@ export default function GraphsAnalysis() {
         <Card className="border-0 shadow-md shadow-gray-100">
           <CardHeader className="pb-2 flex flex-row items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center">
-              <PieChartIcon className="w-4 h-4 text-white" />
+              <PieChartIcon className="kw-4 h-4 text-white" />
             </div>
             <div>
               <CardTitle className="text-sm font-semibold text-gray-900">Energy Distribution</CardTitle>
