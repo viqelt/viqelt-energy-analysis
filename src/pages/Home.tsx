@@ -71,7 +71,7 @@ export default function HomePage() {
         <img
           src="https://mgx-backend-cdn.metadl.com/generate/images/446531/2026-03-17/587c17fb-fa37-421f-b3fb-902bc4805415.png"
           alt="Energy Dashboard"
-          className="w-full h-full object-cover"
+          className="kw-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/80 to-purple-900/60 flex items-center px-6 md:px-8">
           <div>
@@ -86,8 +86,8 @@ export default function HomePage() {
         {/* Real-time Power */}
         <Card className="border-0 shadow-md shadow-gray-100 hover:shadow-lg hover:shadow-indigo-100/50 transition-all duration-300 group">
           <CardHeader className="pb-2 flex flex-row items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-sm">
-              <Zap className="w-5 h-5 text-white" />
+            <div className="kw-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-sm">
+              <Zap className="kw-5 h-5 text-white" />
             </div>
             <div>
               <CardTitle className="text-sm font-medium text-gray-500">Real-time Power</CardTitle>
@@ -98,10 +98,10 @@ export default function HomePage() {
               <span className="text-3xl font-bold text-gray-900">
                 <AnimatedCounter target={currentPower} />
               </span>
-              <span className="text-lg font-medium text-gray-400">W</span>
+              <span className="text-lg font-medium text-gray-400">kW</span>
             </div>
             <div className="flex items-center gap-1 mt-2">
-              <Activity className="w-3.5 h-3.5 text-green-500" />
+              <Activity className="kw-3.5 h-3.5 text-green-500" />
               <span className="text-xs text-green-600 font-medium">Live monitoring</span>
             </div>
           </CardContent>
