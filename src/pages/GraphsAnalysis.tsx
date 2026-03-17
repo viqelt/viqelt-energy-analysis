@@ -116,7 +116,7 @@ export default function GraphsAnalysis() {
                   tick={{ fontSize: 11, fill: "#94A3B8" }}
                   tickLine={false}
                   axisLine={{ stroke: "#E2E8F0" }}
-                  unit="W"
+                  unit="kW"
                 />
                 <Tooltip
                   contentStyle={{
