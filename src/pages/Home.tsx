@@ -18,6 +18,11 @@ import {
   Waves,
   CircleDot,
   Wifi,
+  ShoppingCart,
+  X,
+  Cpu,
+  BarChart2,
+  Smartphone,
 } from "lucide-react";
 import { getRealtimePower, ELECTRICITY_PRICE, getEstimatedMonthlyBill, GAS_PRICE_PER_TH } from "@/lib/mockData";
 
@@ -50,6 +55,7 @@ export default function HomePage() {
   const [includeGas, setIncludeGas] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<"idle" | "loading" | "success">("idle");
   const [lastUpdate, setLastUpdate] = useState(0);
+  const [showBuyModal, setShowBuyModal] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -83,8 +89,17 @@ export default function HomePage() {
     { label: "Power Factor", value: (0.88 + Math.random() * 0.08).toFixed(2), unit: "cos φ", icon: CircleDot, gradient: "from-purple-400 to-violet-500" },
   ];
 
+  const deviceFeatures = [
+    { icon: Zap, text: "Real-time energy monitoring" },
+    { icon: Cpu, text: "AI-based device detection" },
+    { icon: Wifi, text: "WiFi connectivity" },
+    { icon: BarChart2, text: "Web dashboard" },
+    { icon: Smartphone, text: "Mobile dashboard" },
+  ];
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+
       {/* Hero Banner */}
       <div className="relative rounded-2xl overflow-hidden h-40 md:h-48">
         <img
@@ -92,11 +107,18 @@ export default function HomePage() {
           alt="Energy Dashboard"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/80 to-purple-900/60 flex items-center px-6 md:px-8">
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/80 to-purple-900/60 flex items-center justify-between px-6 md:px-8">
           <div>
             <h2 className="text-white text-xl md:text-2xl font-bold">Welcome to Your Energy Hub</h2>
             <p className="text-indigo-200 text-sm mt-1">Monitor, analyze, and optimize your energy consumption</p>
           </div>
+          <button
+            onClick={() => setShowBuyModal(true)}
+            className="flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-xl font-medium text-sm transition-all duration-300 hover:scale-105 border border-white/30 shadow-lg"
+          >
+            <ShoppingCart className="w-4 h-4" />
+            <span>🛒 Buy Device</span>
+          </button>
         </div>
       </div>
 
@@ -312,6 +334,78 @@ export default function HomePage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Buy Device Modal */}
+      {showBuyModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
+            onClick={() => setShowBuyModal(false)}
+          />
+          <div className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300 overflow-hidden">
+            <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+              <button
+                onClick={() => setShowBuyModal(false)}
+                className="absolute top-4 right-4 p-1.5 rounded-lg bg-white/20 hover:bg-white/30 transition-colors"
+              >
+                <X className="w-4 h-4 text-white" />
+              </button>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                  <Cpu className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-white text-xl font-bold">Smart Energy Device</h2>
+                  <p className="text-indigo-200 text-sm">VEAM IoT Monitor</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <p className="text-gray-600 text-sm leading-relaxed">
+                A smart device that monitors your home energy consumption in real time using AI — detects which appliances are running and predicts your monthly bill.
+              </p>
+
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Features</p>
+                {deviceFeatures.map((f, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                      <f.icon className="w-3 h-3 text-white" />
+                    </div>
+                    <span className="text-sm text-gray-700">{f.text}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-indigo-50 rounded-xl p-4 flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-600">Price</span>
+                <div className="text-right">
+                  <span className="text-2xl font-bold text-indigo-600">12,000</span>
+                  <span className="text-sm font-medium text-indigo-400 ml-1">DA</span>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-1">
+                <Button
+                  onClick={() => alert("🚧 Demo only — Order feature coming soon!")}
+                  className="flex-1 h-11 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-medium shadow-lg shadow-indigo-200 transition-all duration-300"
+                >
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  Order Now
+                </Button>
+                <Button
+                  onClick={() => setShowBuyModal(false)}
+                  variant="outline"
+                  className="flex-1 h-11 rounded-xl font-medium border-gray-200 hover:bg-gray-50 transition-all duration-300"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
