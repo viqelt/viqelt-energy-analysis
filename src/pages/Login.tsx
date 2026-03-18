@@ -96,13 +96,7 @@ export default function Login() {
                 Sign Up
               </button>
             </div>
-            {isLogin && (
-  <div className="text-right">
-    <button type="button" onClick={() => setShowForgot(true)} className="text-xs font-medium text-indigo-600 hover:text-purple-600 transition-colors hover:underline">
-      Forgot my password?
-    </button>
-  </div>
-)}
+            
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -121,6 +115,13 @@ export default function Login() {
                   />
                 </div>
               </div>
+              {isLogin && (
+  <div className="text-right">
+    <button type="button" onClick={() => setShowForgot(true)} className="text-xs font-medium text-indigo-600 hover:text-purple-600 transition-colors hover:underline">
+      Forgot my password?
+    </button>
+  </div>
+)}
 
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-gray-700 text-sm font-medium">
