@@ -10,6 +10,8 @@ import AIPrediction from './pages/AIPrediction';
 import HelpContact from './pages/HelpContact';
 import AuthCallback from './pages/AuthCallback';
 import AuthError from './pages/AuthError';
+import HelpContact from './pages/HelpContact';
+import Notifications from './pages/Notifications';
 // MODULE_IMPORTS_START
 // MODULE_IMPORTS_END
 
