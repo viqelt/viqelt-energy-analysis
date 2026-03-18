@@ -77,10 +77,10 @@ export default function HomePage() {
   };
 
   const electricalParams = [
-    { label: "Voltage", value: "220", unit: "V", icon: Zap, gradient: "from-amber-400 to-orange-500" },
-    { label: "Current", value: "5.2", unit: "A", icon: Gauge, gradient: "from-blue-400 to-cyan-500" },
-    { label: "Frequency", value: "50", unit: "Hz", icon: Waves, gradient: "from-green-400 to-emerald-500" },
-    { label: "Power Factor", value: "0.92", unit: "cos φ", icon: CircleDot, gradient: "from-purple-400 to-violet-500" },
+    { label: "Voltage", value: (218 + Math.random() * 4).toFixed(1), unit: "V", icon: Zap, gradient: "from-amber-400 to-orange-500" },
+    { label: "Current", value: (currentPower / 220).toFixed(2), unit: "A", icon: Gauge, gradient: "from-blue-400 to-cyan-500" },
+    { label: "Frequency", value: (49.9 + Math.random() * 0.2).toFixed(1), unit: "Hz", icon: Waves, gradient: "from-green-400 to-emerald-500" },
+    { label: "Power Factor", value: (0.88 + Math.random() * 0.08).toFixed(2), unit: "cos φ", icon: CircleDot, gradient: "from-purple-400 to-violet-500" },
   ];
 
   return (
