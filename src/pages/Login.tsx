@@ -36,8 +36,6 @@ export default function Login() {
         {/* Logo */}
         <div className="text-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
          <img src="https://raw.githubusercontent.com/viqelt/viqelt-energy-analysis/main/logo.jpeg" className="w-16 h-16 rounded-2xl object-cover mb-4" />
-           <img src="https://raw.githubusercontent.com/viqelt/viqelt-energy-analysis/main/logo.jpeg" className="w-16 h-16 rounded-xl object-cover" />
-          </div>
           <h1 className="text-2xl font-bold text-gray-900">VEAM</h1>
           <p className="text-gray-500 mt-1 text-sm">Smart Energy Analysis & Monitor</p>
         </div>
