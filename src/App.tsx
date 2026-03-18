@@ -30,6 +30,7 @@ const App = () => (
             <Route index element={<HomePage />} />
             <Route path="graphs" element={<GraphsAnalysis />} />
             <Route path="ai" element={<AIPrediction />} />
+            <Route path="/dashboard/notifications" element={<Notifications />} />
             <Route path="help" element={<HelpContact />} />
           </Route>
           <Route path="/auth/callback" element={<AuthCallback />} />
