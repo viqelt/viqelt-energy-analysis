@@ -381,7 +381,7 @@ export default function HomePage() {
               <div className="bg-indigo-50 rounded-xl p-4 flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-600">Price</span>
                 <div className="text-right">
-                  <span className="text-2xl font-bold text-indigo-600">12,000</span>
+                  <span className="text-2xl font-bold text-indigo-600">4000</span>
                   <span className="text-sm font-medium text-indigo-400 ml-1">DA</span>
                 </div>
               </div>
