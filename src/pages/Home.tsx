@@ -13,8 +13,13 @@ import {
   CheckCircle2,
   TrendingUp,
   Activity,
+  Gauge,
+  Radio,
+  Waves,
+  CircleDot,
+  Wifi,
 } from "lucide-react";
-import { getRealtimePower, ELECTRICITY_PRICE, getEstimatedMonthlyBill } from "@/lib/mockData";
+import { getRealtimePower, ELECTRICITY_PRICE, getEstimatedMonthlyBill, GAS_PRICE_PER_TH } from "@/lib/mockData";
 
 function AnimatedCounter({ target, duration = 1500 }: { target: number; duration?: number }) {
   const [count, setCount] = useState(0);
@@ -28,7 +33,6 @@ function AnimatedCounter({ target, duration = 1500 }: { target: number; duration
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setCount(Math.round(start + (target - start) * eased));
       if (progress < 1) requestAnimationFrame(animate);
@@ -42,19 +46,27 @@ function AnimatedCounter({ target, duration = 1500 }: { target: number; duration
 
 export default function HomePage() {
   const [currentPower, setCurrentPower] = useState(1250);
-  const [gasAmount, setGasAmount] = useState(500);
+  const [gasTh, setGasTh] = useState(150);
   const [includeGas, setIncludeGas] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<"idle" | "loading" | "success">("idle");
+  const [lastUpdate, setLastUpdate] = useState(0);
 
-  // Simulate real-time power updates
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentPower(getRealtimePower());
+      setLastUpdate(0);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
 
-  const monthlyBill = getEstimatedMonthlyBill(currentPower, includeGas, gasAmount);
+  useEffect(() => {
+    const tick = setInterval(() => {
+      setLastUpdate((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(tick);
+  }, []);
+
+  const monthlyBill = getEstimatedMonthlyBill(currentPower, includeGas, gasTh);
 
   const handleUpload = () => {
     setUploadStatus("loading");
@@ -64,12 +76,19 @@ export default function HomePage() {
     }, 2000);
   };
 
+  const electricalParams = [
+    { label: "Voltage", value: "220", unit: "V", icon: Zap, gradient: "from-amber-400 to-orange-500" },
+    { label: "Current", value: "5.2", unit: "A", icon: Gauge, gradient: "from-blue-400 to-cyan-500" },
+    { label: "Frequency", value: "50", unit: "Hz", icon: Waves, gradient: "from-green-400 to-emerald-500" },
+    { label: "Power Factor", value: "0.92", unit: "cos φ", icon: CircleDot, gradient: "from-purple-400 to-violet-500" },
+  ];
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Hero Banner */}
       <div className="relative rounded-2xl overflow-hidden h-40 md:h-48">
         <img
-          src="https://mgx-backend-cdn.metadl.com/generate/images/446531/2026-03-17/587c17fb-fa37-421f-b3fb-902bc4805415.png"
+          src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200&q=80"
           alt="Energy Dashboard"
           className="w-full h-full object-cover"
         />
@@ -83,11 +102,10 @@ export default function HomePage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Real-time Power */}
         <Card className="border-0 shadow-md shadow-gray-100 hover:shadow-lg hover:shadow-indigo-100/50 transition-all duration-300 group">
           <CardHeader className="pb-2 flex flex-row items-center gap-3">
-            <div className="kw-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-sm">
-              <Zap className="kw-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-sm">
+              <Zap className="w-5 h-5 text-white" />
             </div>
             <div>
               <CardTitle className="text-sm font-medium text-gray-500">Real-time Power</CardTitle>
@@ -96,18 +114,17 @@ export default function HomePage() {
           <CardContent>
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-bold text-gray-900">
-                <AnimatedCounter target={currentPower} />
+                <AnimatedCounter target={parseFloat((currentPower / 1000).toFixed(2))} />
               </span>
               <span className="text-lg font-medium text-gray-400">kW</span>
             </div>
             <div className="flex items-center gap-1 mt-2">
-              <Activity className="kw-3.5 h-3.5 text-green-500" />
+              <Activity className="w-3.5 h-3.5 text-green-500" />
               <span className="text-xs text-green-600 font-medium">Live monitoring</span>
             </div>
           </CardContent>
         </Card>
 
-        {/* Electricity Price */}
         <Card className="border-0 shadow-md shadow-gray-100 hover:shadow-lg hover:shadow-indigo-100/50 transition-all duration-300">
           <CardHeader className="pb-2 flex flex-row items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center shadow-sm">
@@ -129,7 +146,6 @@ export default function HomePage() {
           </CardContent>
         </Card>
 
-        {/* Estimated Monthly Bill */}
         <Card className="border-0 shadow-md shadow-gray-100 hover:shadow-lg hover:shadow-purple-100/50 transition-all duration-300 sm:col-span-2 lg:col-span-1">
           <CardHeader className="pb-2 flex flex-row items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center shadow-sm">
@@ -155,9 +171,59 @@ export default function HomePage() {
         </Card>
       </div>
 
+      {/* Electrical Parameters Section */}
+      <div>
+        <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <Radio className="w-4 h-4 text-indigo-500" />
+          Real-time Electrical Parameters
+        </h3>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {electricalParams.map((param) => (
+            <Card key={param.label} className="border-0 shadow-sm shadow-gray-100 hover:shadow-md hover:shadow-indigo-100/40 hover:-translate-y-0.5 transition-all duration-300 cursor-default">
+              <CardContent className="p-4 flex items-center gap-3">
+                <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${param.gradient} flex items-center justify-center shadow-sm flex-shrink-0`}>
+                  <param.icon className="w-4 h-4 text-white" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[11px] text-gray-400 font-medium truncate">{param.label}</p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-lg font-bold text-gray-900">{param.value}</span>
+                    <span className="text-xs font-medium text-gray-400">{param.unit}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Status Indicator */}
+      <Card className="border-0 shadow-sm shadow-gray-100 hover:shadow-md transition-all duration-300">
+        <CardContent className="p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-sm">
+              <Wifi className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm font-semibold text-gray-900">Status:</span>
+                <span className="text-sm font-semibold text-green-600">Connected</span>
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+              </div>
+              <p className="text-[11px] text-gray-400 mt-0.5">
+                Last Update: <span className="font-medium text-gray-500">{lastUpdate} sec ago</span>
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-xs text-green-600 font-medium hidden sm:inline">Live</span>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Bottom Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Gas Input */}
         <Card className="border-0 shadow-md shadow-gray-100 hover:shadow-lg transition-all duration-300">
           <CardHeader className="pb-3 flex flex-row items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-sm">
@@ -171,35 +237,36 @@ export default function HomePage() {
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <Label htmlFor="gas-toggle" className="text-sm text-gray-600 font-medium">
-                Include Gas
+                Include gas in total calculation
               </Label>
               <div className="flex items-center gap-2">
                 <span className={`text-xs font-medium ${!includeGas ? "text-gray-900" : "text-gray-400"}`}>OFF</span>
-                <Switch
-                  id="gas-toggle"
-                  checked={includeGas}
-                  onCheckedChange={setIncludeGas}
-                />
+                <Switch id="gas-toggle" checked={includeGas} onCheckedChange={setIncludeGas} />
                 <span className={`text-xs font-medium ${includeGas ? "text-gray-900" : "text-gray-400"}`}>ON</span>
               </div>
             </div>
-            <div className={`transition-all duration-300 ${includeGas ? "opacity-100 max-h-20" : "opacity-40 max-h-20 pointer-events-none"}`}>
-              <Label htmlFor="gas-amount" className="text-xs text-gray-500">
-                Gas Amount (DA)
-              </Label>
+            <div className={`transition-all duration-300 ${includeGas ? "opacity-100 max-h-40" : "opacity-40 max-h-40 pointer-events-none"}`}>
+              <Label htmlFor="gas-amount" className="text-xs text-gray-500">Gas Consumption (Th)</Label>
               <Input
                 id="gas-amount"
                 type="number"
-                value={gasAmount}
-                onChange={(e) => setGasAmount(Number(e.target.value))}
+                value={gasTh}
+                onChange={(e) => setGasTh(Number(e.target.value))}
                 className="mt-1 h-10 border-gray-200 focus:border-indigo-500 rounded-lg"
-                placeholder="Enter gas cost in DA"
+                placeholder="Enter gas consumption in Th"
               />
+              <p className="text-xs text-gray-400 mt-2">
+                Gas price: <span className="font-semibold text-gray-600">{GAS_PRICE_PER_TH} DA per Th</span>
+              </p>
+              {includeGas && gasTh > 0 && (
+                <p className="text-xs text-emerald-600 font-medium mt-1">
+                  Gas total: {(gasTh * GAS_PRICE_PER_TH).toFixed(2)} DA
+                </p>
+              )}
             </div>
           </CardContent>
         </Card>
 
-        {/* Upload Data */}
         <Card className="border-0 shadow-md shadow-gray-100 hover:shadow-lg transition-all duration-300">
           <CardHeader className="pb-3 flex flex-row items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center shadow-sm">
@@ -212,7 +279,7 @@ export default function HomePage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <img
-              src="https://mgx-backend-cdn.metadl.com/generate/images/446531/2026-03-17/ffe48386-02af-4d30-bac7-fa6b9d6aa9e8.png"
+              src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80"
               alt="IoT Device"
               className="w-full h-28 object-cover rounded-xl"
             />
