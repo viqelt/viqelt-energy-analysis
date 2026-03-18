@@ -60,6 +60,7 @@ export const getRealtimePower = () => {
 };
 
 export const ELECTRICITY_PRICE = 4; // DA per kWh
+export const GAS_PRICE_PER_TH = 0.32;
 
 export const getEstimatedMonthlyBill = (currentPower: number, includeGas: boolean, gasAmount: number) => {
   // Average daily consumption in kWh (assuming current power is average)
