@@ -5,6 +5,7 @@ import {
   BarChart3,
   Brain,
   HelpCircle,
+  Bell,
   Zap,
   Menu,
   X,
