@@ -89,7 +89,7 @@ export default function Login() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="demo@energy.com"
+                    placeholder="example@veam.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg"
