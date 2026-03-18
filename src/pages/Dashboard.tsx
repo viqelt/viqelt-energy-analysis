@@ -17,7 +17,8 @@ const navItems = [
   { path: "/dashboard", label: "Home", icon: Home },
   { path: "/dashboard/graphs", label: "Graphs & Analysis", icon: BarChart3 },
   { path: "/dashboard/ai", label: "AI Prediction", icon: Brain },
-  { path: "/dashboard/help", label: "Help & Contact", icon: HelpCircle },
+  { path: "/dashboard/notifications", label: "Notifications", icon: Bell },
+{ path: "/dashboard/help", label: "Help & Contact", icon: HelpCircle },
 ];
 
 export default function Dashboard() {
