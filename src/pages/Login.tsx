@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Zap, Mail, Lock, ArrowRight, X, Send, CheckCircle2 } from "lucide-react";
+import { Zap, Mail, Lock, ArrowRight, X, Phone, Send, CheckCircle2 } from "lucide-react";
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,23 +12,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
-  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotInput, setForgotInput] = useState("");
   const [forgotSent, setForgotSent] = useState(false);
   const [forgotLoading, setForgotLoading] = useState(false);
-
-  const closeForgotModal = () => {
-    setShowForgot(false);
-    setForgotEmail("");
-    setForgotSent(false);
-  };
-
-  const handleForgot = () => {
-    setForgotLoading(true);
-    setTimeout(() => {
-      setForgotLoading(false);
-      setForgotSent(true);
-    }, 1500);
-  };
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -39,6 +25,22 @@ export default function Login() {
       setIsLoading(false);
       navigate("/dashboard");
     }, 1200);
+  };
+
+  const handleForgotSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setForgotLoading(true);
+    setTimeout(() => {
+      setForgotLoading(false);
+      setForgotSent(true);
+    }, 1500);
+  };
+
+  const closeForgotModal = () => {
+    setShowForgot(false);
+    setForgotInput("");
+    setForgotSent(false);
+    setForgotLoading(false);
   };
 
   return (
@@ -53,9 +55,11 @@ export default function Login() {
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-         <img src="https://raw.githubusercontent.com/viqelt/viqelt-energy-analysis/main/logo.jpeg" className="w-16 h-16 rounded-2xl object-cover mb-4 mx-auto" />
-          <h1 className="text-2xl font-bold text-gray-900">VEAM</h1>
-          <p className="text-gray-500 mt-1 text-sm">Smart Energy Analysis & Monitor</p>
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-200 mb-4">
+            <Zap className="w-8 h-8 text-white" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Smart Energy Monitor</h1>
+          <p className="text-gray-500 mt-1 text-sm">IoT-Powered Energy Dashboard</p>
         </div>
 
         <Card className="border-0 shadow-xl shadow-gray-200/50 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150">
@@ -96,7 +100,6 @@ export default function Login() {
                 Sign Up
               </button>
             </div>
-            
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -108,13 +111,13 @@ export default function Login() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="example@veam.com"
+                    placeholder="demo@energy.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg"
                   />
-              
-    
+                </div>
+              </div>
 
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-gray-700 text-sm font-medium">
@@ -133,9 +136,14 @@ export default function Login() {
                 </div>
               </div>
 
+              {/* Forgot Password Link */}
               {isLogin && (
                 <div className="text-right">
-                  <button type="button" onClick={() => setShowForgot(true)} className="text-xs font-medium text-indigo-600 hover:text-purple-600 transition-colors hover:underline">
+                  <button
+                    type="button"
+                    onClick={() => setShowForgot(true)}
+                    className="text-xs font-medium text-indigo-600 hover:text-purple-600 transition-colors hover:underline"
+                  >
                     Forgot my password?
                   </button>
                 </div>
@@ -163,47 +171,92 @@ export default function Login() {
             <div className="mt-4 p-3 bg-indigo-50 rounded-lg">
               <p className="text-xs text-indigo-600 text-center font-medium">
                 🔓 Demo Mode — Any email & password will work
-              </p>
+       
+              <CardDescription className="text-gray-500 text-sm">
+                We will send you a verification code
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {forgotSent ? (
+                <div className="text-center py-4 animate-in fade-in zoom-in-95 duration-300">
+                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-100 mb-3">
+                    <CheckCircle2 className="w-7 h-7 text-green-500" />
+                  </div>
+                  <p className="text-sm font-semibold text-gray-900">Code sent successfully</p>
+                  <p className="text-xs text-gray-500 mt-1">(Demo)</p>
+                  <Button
+                    onClick={closeForgotModal}
+                    className="mt-4 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-lg font-medium shadow-md shadow-indigo-200 transition-all duration-300"
+                  >
+                    Back to Login
+                  </Button>
+                </div>
+              ) : (
+                <form onSubmit={handleForgotSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="forgot-input" className="text-gray-700 text-sm font-medium">
+                      Email or Phone Number
+                    </Label>
+                    <div className="relative">
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                        <Mail className="w-3.5 h-3.5 text-gray-400" />
+                        <span className="text-gray-300 text-xs">/</span>
+                        <Phone className="w-3.5 h-3.5 text-gray-400" />
+                      </div>
+                      <Input
+                        id="forgot-input"
+                        type="text"
+                        placeholder="email@example.com or +213..."
+                        value={forgotInput}
+                        onChange={(e) => setForgotInput(e.target.value)}
+                        className="pl-[72px] h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg"
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={forgotLoading}
+                    className="w-full h-11 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-lg font-medium shadow-lg shadow-indigo-200 hover:shadow-xl transition-all duration-300"
+                  >
+                    {forgotLoading ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <span>Sending...</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Send className="w-4 h-4" />
+                        <span>Send Code</span>
+                      </div>
+                    )}
+                  </Button>
+                </form>
+              )}       </p>
             </div>
           </CardContent>
         </Card>
 
-      <p className="text-center text-xs text-gray-400 mt-6 animate-in fade-in duration-700 delay-500">
-          Smart Energy Analysis & Monitor v1.0 - Demo Version
+        <p className="text-center text-xs text-gray-400 mt-6 animate-in fade-in duration-700 delay-500">
+          Smart Energy Monitoring System v1.0 — Demo Version
         </p>
       </div>
 
       {/* Forgot Password Modal */}
       {showForgot && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={closeForgotModal} />
-          <Card className="relative z-10 w-full max-w-sm border-0 shadow-2xl">
+          <div
+            className="absolute inset-0 bg-black/30 backdrop-blur-sm animate-in fade-in duration-200"
+            onClick={closeForgotModal}
+          />
+          <Card className="relative z-10 w-full max-w-sm border-0 shadow-2xl shadow-gray-300/50 animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300">
             <CardHeader className="pb-2 relative">
-              <button onClick={closeForgotModal} className="absolute top-4 right-4 p-1 rounded-lg hover:bg-gray-100">
+              <button
+                onClick={closeForgotModal}
+                className="absolute top-4 right-4 p-1 rounded-lg hover:bg-gray-100 transition-colors"
+              >
                 <X className="w-4 h-4 text-gray-400" />
               </button>
               <CardTitle className="text-lg font-semibold text-gray-900">Reset Password</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {forgotSent ? (
-                <div className="text-center py-4 space-y-2">
-                  <CheckCircle2 className="w-10 h-10 text-green-500 mx-auto" />
-                  <p className="text-sm font-medium text-gray-900">Email Sent!</p>
-                  <p className="text-xs text-gray-500">Check your inbox for reset instructions</p>
-                  <Button onClick={closeForgotModal} className="w-full mt-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">Done</Button>
-                </div>
-              ) : (
-                <>
-                  <p className="text-sm text-gray-500">Enter your email to receive reset instructions</p>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <Input placeholder="example@veam.com" value={forgotEmail} onChange={(e) => setForgotEmail(e.target.value)} className="pl-10 h-11 border-gray-200 rounded-lg" />
-                  </div>
-                  <Button onClick={handleForgot} disabled={forgotLoading} className="w-full h-11 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg">
-                    {forgotLoading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <><Send className="w-4 h-4 mr-2" />Send Reset Email</>}
-                  </Button>
-                </>
-              )}
             </CardContent>
           </Card>
         </div>
