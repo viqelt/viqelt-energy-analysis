@@ -72,7 +72,7 @@ export default function GraphsAnalysis() {
                   : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
               }`}
             >
-              <Clock className="kW-3 h-3 mr-1" />
+              <Clock className="W-3 h-3 mr-1" />
               {btn.label}
             </Button>
           ))}
@@ -82,8 +82,8 @@ export default function GraphsAnalysis() {
       {/* Line Chart */}
       <Card className="border-0 shadow-md shadow-gray-100">
         <CardHeader className="pb-2 flex flex-row items-center gap-3">
-          <div className="kW-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center">
-            <TrendingUp className="kW-4 h-4 text-white" />
+          <div className="W-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center">
+            <TrendingUp className="W-4 h-4 text-white" />
           </div>
           <div>
             <CardTitle className="text-sm font-semibold text-gray-900">Energy vs Time</CardTitle>
@@ -91,7 +91,7 @@ export default function GraphsAnalysis() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="h-[300px] kw-full">
+          <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={hourlyData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
                 <defs>
