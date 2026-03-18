@@ -114,11 +114,7 @@ export default function Login() {
                     className="pl-10 h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg"
                   />
               
-    <button type="button" onClick={() => setShowForgot(true)} className="text-xs font-medium text-indigo-600 hover:text-purple-600 transition-colors hover:underline">
-      Forgot my password?
-    </button>
-  </div>
-)}
+    
 
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-gray-700 text-sm font-medium">
