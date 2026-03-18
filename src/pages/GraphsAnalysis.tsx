@@ -116,7 +116,7 @@ export default function GraphsAnalysis() {
                   tick={{ fontSize: 11, fill: "#94A3B8" }}
                   tickLine={false}
                   axisLine={{ stroke: "#E2E8F0" }}
-                  unit="kW"
+                  unit="W"
                 />
                 <Tooltip
                   contentStyle={{
@@ -127,7 +127,7 @@ export default function GraphsAnalysis() {
                     padding: "10px 14px",
                   }}
                   labelStyle={{ color: "#64748B", fontSize: 12, marginBottom: 4 }}
-                  formatter={(value: number) => [`${value} kW`, "Power"]}
+                  formatter={(value: number) => [`${value} W`, "Power"]}
                 />
                 <Line
                   type="monotone"
