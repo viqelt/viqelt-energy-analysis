@@ -114,7 +114,7 @@ export default function HomePage() {
           <CardContent>
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-bold text-gray-900">
-                <AnimatedCounter target={parseFloat((currentPower / 1000).toFixed(2))} />
+                {(currentPower / 1000).toFixed(2)}
               </span>
               <span className="text-lg font-medium text-gray-400">kW</span>
             </div>
