@@ -38,8 +38,8 @@ export default function Login() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-200 mb-4">
             <Zap className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Smart Energy Monitor</h1>
-          <p className="text-gray-500 mt-1 text-sm">IoT-Powered Energy Dashboard</p>
+          <h1 className="text-2xl font-bold text-gray-900">VEAM</h1>
+          <p className="text-gray-500 mt-1 text-sm">Smart Energy Analysis & Monitor</p>
         </div>
 
         <Card className="border-0 shadow-xl shadow-gray-200/50 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150">
