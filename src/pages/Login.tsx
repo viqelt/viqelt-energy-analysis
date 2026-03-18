@@ -113,10 +113,7 @@ export default function Login() {
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg"
                   />
-                </div>
-              </div>
-              {isLogin && (
-  <div className="text-right">
+              
     <button type="button" onClick={() => setShowForgot(true)} className="text-xs font-medium text-indigo-600 hover:text-purple-600 transition-colors hover:underline">
       Forgot my password?
     </button>
@@ -139,6 +136,14 @@ export default function Login() {
                   />
                 </div>
               </div>
+
+              {isLogin && (
+                <div className="text-right">
+                  <button type="button" onClick={() => setShowForgot(true)} className="text-xs font-medium text-indigo-600 hover:text-purple-600 transition-colors hover:underline">
+                    Forgot my password?
+                  </button>
+                </div>
+              )}
 
               <Button
                 type="submit"
