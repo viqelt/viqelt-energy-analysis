@@ -53,9 +53,7 @@ export default function Dashboard() {
       >
         {/* Logo */}
         <div className="p-5 flex items-center gap-3 border-b border-gray-100">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md shadow-indigo-200">
-            <Zap className="w-5 h-5 text-white" />
-          </div>
+         <img src="/logo.png" className="w-10 h-10 rounded-xl object-cover" />
           <div>
             <h2 className="font-bold text-gray-900 text-sm leading-tight">VEAM</h2>
             <p className="text-[11px] text-gray-400">Smart Energy Analysis & Monitor</p>
