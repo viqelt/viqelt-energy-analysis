@@ -110,7 +110,7 @@ export default function GraphsAnalysis() {
                   tick={{ fontSize: 11, fill: "#94A3B8" }}
                   tickLine={false}
                   axisLine={{ stroke: "#E2E8F0" }}
-                  interval={filter === "day" ? 2 : 3}
+                  interval={0}
                 />
                 <YAxis
                   tick={{ fontSize: 11, fill: "#94A3B8" }}
