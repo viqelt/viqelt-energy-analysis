@@ -170,7 +170,7 @@ export default function AboutUs() {
           </div>
           <div className="text-right">
             <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-600">
-              2025 — 2026
+              2026 — 2027
             </span>
           </div>
         </CardContent>
@@ -179,11 +179,9 @@ export default function AboutUs() {
       {/* Footer note */}
       <div className="text-center pb-2">
         <p className="text-xs text-gray-400">
-          VEAM — Smart Energy Analysis & Monitor · Graduation Project 2026
+          VEAM — Smart Energy Analysis & Monitor · Startup Project 2027
         </p>
-        <p className="text-xs text-gray-300 mt-1">
-          Built with React · TypeScript · Tailwind CSS · Recharts
-        </p>
+        
       </div>
 
     </div>
