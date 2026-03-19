@@ -12,6 +12,7 @@ import {
   ChevronRight,
   Wifi,
   WifiOff,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
