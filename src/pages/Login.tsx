@@ -56,7 +56,7 @@ export default function Login() {
         <div className="text-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <img src="https://raw.githubusercontent.com/viqelt/viqelt-energy-analysis/main/logo.jpeg" className="w-16 h-16 rounded-2xl object-cover mb-4 mx-auto" />
           <h1 className="text-2xl font-bold text-gray-900">VEAM</h1>
-          <p className="text-gray-500 mt-1 text-sm">Smart Energy Analysis & Monitor</p>
+          <p className="text-gray-500 mt-1 text-sm">Voltage Energy Analysis & Monitor</p>
         </div>
 
         <Card className="border-0 shadow-xl shadow-gray-200/50 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150">
@@ -161,7 +161,7 @@ export default function Login() {
         </Card>
 
         <p className="text-center text-xs text-gray-400 mt-6 animate-in fade-in duration-700 delay-500">
-          Smart Energy Analysis & Monitor v1.0 - Demo Version
+          Voltage Energy Analysis & Monitor v1.0 - Demo Version
         </p>
       </div>
 
