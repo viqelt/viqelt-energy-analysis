@@ -190,7 +190,11 @@ export default function GraphsAnalysis() {
                     }}
                     formatter={(value: number) => [`${value} Wh`, "Consumption"]}
                   />
-                  <Bar dataKey="consumption" fill="url(#barGradient)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="consumption" radius={[4, 4, 0, 0]}>
+  {peakData.map((entry) => (
+    <Cell key={entry.hour} fill={entry.consumption > 1500 ? "#ef4444" : "#22c55e"} />
+  ))}
+</Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
