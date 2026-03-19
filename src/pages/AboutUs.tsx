@@ -58,7 +58,7 @@ export default function AboutUs() {
               />
               <div>
                 <h1 className="text-white text-2xl md:text-3xl font-bold">VEAM</h1>
-                <p className="text-indigo-200 text-sm">Smart Energy Analysis & Monitor</p>
+                <p className="text-indigo-200 text-sm">Voltage Energy Analysis & Monitor</p>
               </div>
             </div>
             <p className="text-indigo-100 text-sm max-w-lg">
