@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -23,6 +23,7 @@ import {
   Cpu,
   BarChart2,
   Smartphone,
+  Star,
 } from "lucide-react";
 import { getRealtimePower, ELECTRICITY_PRICE, getEstimatedMonthlyBill, GAS_PRICE_PER_TH } from "@/lib/mockData";
 
@@ -88,6 +89,28 @@ export default function HomePage() {
     { label: "Frequency", value: (49.9 + Math.random() * 0.2).toFixed(1), unit: "Hz", icon: Waves, gradient: "from-green-400 to-emerald-500" },
     { label: "Power Factor", value: (0.88 + Math.random() * 0.08).toFixed(2), unit: "cos φ", icon: CircleDot, gradient: "from-purple-400 to-violet-500" },
   ];
+
+  // Energy Score calculation
+  const energyScore = useMemo(() => {
+    const powerKw = currentPower / 1000;
+    const powerFactor = parseFloat(electricalParams[3].value);
+    const frequency = parseFloat(electricalParams[2].value);
+
+    // Power score: lower is better (max 3kW normal)
+    const powerScore = Math.max(0, 40 - (powerKw / 3) * 40);
+    // Power factor score: closer to 1 is better
+    const pfScore = powerFactor * 35;
+    // Frequency score: closer to 50Hz is better
+    const freqScore = Math.max(0, 25 - Math.abs(frequency - 50) * 50);
+
+    return Math.min(100, Math.round(powerScore + pfScore + freqScore));
+  }, [currentPower]);
+
+  const scoreConfig = energyScore >= 75
+    ? { color: "#22c55e", bg: "from-green-400 to-emerald-500", label: "Excellent", msg: "Your energy consumption is optimal" }
+    : energyScore >= 50
+    ? { color: "#f59e0b", bg: "from-amber-400 to-orange-500", label: "Good", msg: "Your consumption is within normal range" }
+    : { color: "#ef4444", bg: "from-red-400 to-rose-500", label: "High", msg: "Consider reducing high-power devices" };
 
   const deviceFeatures = [
     { icon: Zap, text: "Real-time energy monitoring" },
@@ -192,6 +215,64 @@ export default function HomePage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* ⚡ Energy Score */}
+      <Card className="border-0 shadow-md shadow-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden">
+        <div className={`h-1.5 w-full bg-gradient-to-r ${scoreConfig.bg}`} />
+        <CardContent className="p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              {/* Score Circle */}
+              <div className="relative w-20 h-20 flex-shrink-0">
+                <svg viewBox="0 0 80 80" className="w-full h-full -rotate-90">
+                  <circle cx="40" cy="40" r="32" fill="none" stroke="#f1f5f9" strokeWidth="8" />
+                  <circle
+                    cx="40" cy="40" r="32" fill="none"
+                    stroke={scoreConfig.color}
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    strokeDasharray={`${(energyScore / 100) * 201} 201`}
+                    style={{ transition: "stroke-dasharray 1s ease" }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-xl font-bold text-gray-900">{energyScore}</span>
+                </div>
+              </div>
+
+              {/* Score Info */}
+              <div>
+                <div className="flex items-center gap-2">
+                  <Star className="w-4 h-4" style={{ color: scoreConfig.color }} />
+                  <span className="text-lg font-bold text-gray-900">Energy Score</span>
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full`}
+                    style={{ background: `${scoreConfig.color}20`, color: scoreConfig.color }}>
+                    {scoreConfig.label}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-500 mt-1">{scoreConfig.msg}</p>
+                <div className="flex items-center gap-1 mt-2">
+                  <div className="h-2 w-32 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-1000"
+                      style={{ width: `${energyScore}%`, background: scoreConfig.color }}
+                    />
+                  </div>
+                  <span className="text-xs text-gray-400 ml-1">{energyScore}/100</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Score Breakdown */}
+            <div className="hidden md:flex flex-col gap-1 text-right">
+              <p className="text-xs text-gray-400">Based on:</p>
+              <p className="text-xs text-gray-600">⚡ Power consumption</p>
+              <p className="text-xs text-gray-600">📊 Power factor</p>
+              <p className="text-xs text-gray-600">〰️ Frequency stability</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Electrical Parameters Section */}
       <div>
