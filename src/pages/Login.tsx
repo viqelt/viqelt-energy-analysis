@@ -90,7 +90,7 @@ export default function Login() {
                     <Label htmlFor="firstName" className="text-gray-700 text-sm font-medium">First Name</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <Input id="firstName" type="text" placeholder="Youcef"
+                      <Input id="firstName" type="text" placeholder="Oussama"
                         value={firstName} onChange={(e) => setFirstName(e.target.value)}
                         className="pl-10 h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg" />
                     </div>
@@ -99,7 +99,7 @@ export default function Login() {
                     <Label htmlFor="lastName" className="text-gray-700 text-sm font-medium">Last Name</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <Input id="lastName" type="text" placeholder="Benali"
+                      <Input id="lastName" type="text" placeholder="Touati"
                         value={lastName} onChange={(e) => setLastName(e.target.value)}
                         className="pl-10 h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg" />
                     </div>
