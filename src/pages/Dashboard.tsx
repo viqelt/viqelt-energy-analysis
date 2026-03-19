@@ -75,7 +75,7 @@ export default function Dashboard() {
         }`}
       >
         <div className="p-5 flex items-center gap-3 border-b border-gray-100">
-          <img src="https://raw.githubusercontent.com/viqelt/viqelt-energy-analysis/main/logo.jpeg" className="w-10 h-10 rounded-xl object-cover object-center" style={{minWidth: '40px'}} />
+          <img src="https://raw.githubusercontent.com/viqelt/viqelt-energy-analysis/main/logo.jpeg" className="w-10 h-10 rounded-xl object-cover object-center bg-white p-0.5" style={{minWidth: '40px'}} />
           <div>
             <h2 className="font-bold text-gray-900 text-sm leading-tight">VEAM</h2>
             <p className="text-[11px] text-gray-400">Voltage Energy Analysis & Monitor</p>
