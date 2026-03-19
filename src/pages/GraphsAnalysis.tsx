@@ -14,10 +14,9 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from "recharts";
 import { BarChart3, TrendingUp, PieChartIcon, Clock } from "lucide-react";
-import { generateHourlyData, getPeakHoursData, getEnergyDistribution } from "@/lib/mockData";
+import { getPeakHoursData, getEnergyDistribution } from "@/lib/mockData";
 
 type FilterType = "day" | "week" | "month";
 
@@ -53,20 +52,6 @@ export default function GraphsAnalysis() {
       ];
     }
   }, [filter]);
-    if (filter === "day") return raw;
-    // Aggregate by hour for multi-day views
-    const hourMap: Record<string, { total: number; count: number }> = {};
-    raw.forEach((d) => {
-      if (!hourMap[d.time]) hourMap[d.time] = { total: 0, count: 0 };
-      hourMap[d.time].total += d.power;
-      hourMap[d.time].count += 1;
-    });
-    return Object.entries(hourMap).map(([time, { total, count }]) => ({
-      time,
-      power: Math.round(total / count),
-      hour: parseInt(time),
-    }));
-  }, [filter]);
 
   const peakData = useMemo(() => getPeakHoursData(), [filter]);
   const distribution = useMemo(() => getEnergyDistribution(), []);
@@ -76,6 +61,8 @@ export default function GraphsAnalysis() {
     { label: "7 Days", value: "week" },
     { label: "Month", value: "month" },
   ];
+
+  const yUnit = filter === "day" ? "W" : "kWh";
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -98,7 +85,7 @@ export default function GraphsAnalysis() {
                   : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
               }`}
             >
-              <Clock className="W-3 h-3 mr-1" />
+              <Clock className="w-3 h-3 mr-1" />
               {btn.label}
             </Button>
           ))}
@@ -108,12 +95,14 @@ export default function GraphsAnalysis() {
       {/* Line Chart */}
       <Card className="border-0 shadow-md shadow-gray-100">
         <CardHeader className="pb-2 flex flex-row items-center gap-3">
-          <div className="W-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center">
-            <TrendingUp className="W-4 h-4 text-white" />
+          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center">
+            <TrendingUp className="w-4 h-4 text-white" />
           </div>
           <div>
             <CardTitle className="text-sm font-semibold text-gray-900">Energy vs Time</CardTitle>
-            <p className="text-xs text-gray-400">Hourly power consumption ({filter === "day" ? "Today" : filter === "week" ? "7-day avg" : "Monthly avg"})</p>
+            <p className="text-xs text-gray-400">
+              {filter === "day" ? "Hourly — Today" : filter === "week" ? "Daily — This Week" : "Weekly — This Month"}
+            </p>
           </div>
         </CardHeader>
         <CardContent>
@@ -125,10 +114,6 @@ export default function GraphsAnalysis() {
                     <stop offset="0%" stopColor="#6366F1" />
                     <stop offset="100%" stopColor="#8B5CF6" />
                   </linearGradient>
-                  <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#6366F1" stopOpacity={0.15} />
-                    <stop offset="100%" stopColor="#6366F1" stopOpacity={0} />
-                  </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
                 <XAxis
@@ -136,13 +121,13 @@ export default function GraphsAnalysis() {
                   tick={{ fontSize: 11, fill: "#94A3B8" }}
                   tickLine={false}
                   axisLine={{ stroke: "#E2E8F0" }}
-                  interval={0}
+                  interval={filter === "day" ? 2 : 0}
                 />
                 <YAxis
                   tick={{ fontSize: 11, fill: "#94A3B8" }}
                   tickLine={false}
                   axisLine={{ stroke: "#E2E8F0" }}
-                  unit="W"
+                  unit={yUnit}
                 />
                 <Tooltip
                   contentStyle={{
@@ -153,14 +138,14 @@ export default function GraphsAnalysis() {
                     padding: "10px 14px",
                   }}
                   labelStyle={{ color: "#64748B", fontSize: 12, marginBottom: 4 }}
-                  formatter={(value: number) => [`${value} W`, "Power"]}
+                  formatter={(value: number) => [`${value} ${yUnit}`, "Power"]}
                 />
                 <Line
                   type="monotone"
                   dataKey="power"
                   stroke="url(#lineGradient)"
                   strokeWidth={2.5}
-                  dot={false}
+                  dot={filter !== "day"}
                   activeDot={{ r: 5, fill: "#6366F1", stroke: "#fff", strokeWidth: 2 }}
                 />
               </LineChart>
@@ -186,12 +171,6 @@ export default function GraphsAnalysis() {
             <div className="h-[280px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={peakData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
-                  <defs>
-                    <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#8B5CF6" />
-                      <stop offset="100%" stopColor="#6366F1" />
-                    </linearGradient>
-                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
                   <XAxis
                     dataKey="hour"
@@ -214,13 +193,13 @@ export default function GraphsAnalysis() {
                       boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
                       padding: "10px 14px",
                     }}
-                    formatter={(value: number) => [`${value} Wh`, "Consumption"]}
+                    formatter={(value: number) => [`${value} W`, "Consumption"]}
                   />
                   <Bar dataKey="consumption" radius={[4, 4, 0, 0]}>
-  {peakData.map((entry) => (
-    <Cell key={entry.hour} fill={entry.consumption > 2100 ? "#ef4444" : "#22c55e"} />
-  ))}
-</Bar>
+                    {peakData.map((entry) => (
+                      <Cell key={entry.hour} fill={entry.consumption > 2100 ? "#ef4444" : "#22c55e"} />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -231,7 +210,7 @@ export default function GraphsAnalysis() {
         <Card className="border-0 shadow-md shadow-gray-100">
           <CardHeader className="pb-2 flex flex-row items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center">
-              <PieChartIcon className="kw-4 h-4 text-white" />
+              <PieChartIcon className="w-4 h-4 text-white" />
             </div>
             <div>
               <CardTitle className="text-sm font-semibold text-gray-900">Energy Distribution</CardTitle>
@@ -268,14 +247,10 @@ export default function GraphsAnalysis() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            {/* Legend */}
             <div className="space-y-2 mt-2">
               {distribution.map((item) => (
                 <div key={item.name} className="flex items-center gap-2 text-sm">
-                  <div
-                    className="w-3 h-3 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: item.color }}
-                  />
+                  <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
                   <span className="font-medium text-gray-700 min-w-[70px]">{item.name}</span>
                   <span className="text-gray-400">—</span>
                   <span className="text-gray-500 text-xs">{item.devices}</span>
