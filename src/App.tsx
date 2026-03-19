@@ -12,6 +12,7 @@ import AuthCallback from './pages/AuthCallback';
 import AuthError from './pages/AuthError';
 import HelpContact from './pages/HelpContact';
 import Notifications from './pages/Notifications';
+import AboutUs from './pages/AboutUs';
 // MODULE_IMPORTS_START
 // MODULE_IMPORTS_END
 
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="ai" element={<AIPrediction />} />
             <Route path="/dashboard/notifications" element={<Notifications />} />
             <Route path="help" element={<HelpContact />} />
+            <Route path="/dashboard/about" element={<AboutUs />} />
           </Route>
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/auth/error" element={<AuthError />} />
