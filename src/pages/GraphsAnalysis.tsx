@@ -197,7 +197,7 @@ export default function GraphsAnalysis() {
                   />
                   <Bar dataKey="consumption" radius={[4, 4, 0, 0]}>
                     {peakData.map((entry) => (
-                      <Cell key={entry.hour} fill={entry.consumption > 2100 ? "#f87171" : "#4ade80"} />
+                      <Cell key={entry.hour} fill={entry.consumption > 2500 ? "#dc2626" : "#16a34a"} />
                     ))}
                   </Bar>
                 </BarChart>
