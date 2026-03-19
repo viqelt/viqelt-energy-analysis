@@ -25,8 +25,34 @@ export default function GraphsAnalysis() {
   const [filter, setFilter] = useState<FilterType>("day");
 
   const hourlyData = useMemo(() => {
-    const days = filter === "day" ? 1 : filter === "week" ? 7 : 30;
-    const raw = generateHourlyData(days);
+    if (filter === "day") {
+      return Array.from({ length: 24 }, (_, h) => {
+        let base = 800;
+        if (h >= 6 && h <= 9) base = 1800;
+        if (h >= 12 && h <= 14) base = 2200;
+        if (h >= 18 && h <= 22) base = 3000;
+        if (h >= 0 && h <= 5) base = 400;
+        return {
+          time: `${String(h).padStart(2, "0")}:00`,
+          power: Math.max(200, Math.round(base + Math.random() * 400 - 200)),
+        };
+      });
+    } else if (filter === "week") {
+      const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+      const bases = [12, 18, 15, 20, 25, 30, 22];
+      return days.map((day, i) => ({
+        time: day,
+        power: Math.round(bases[i] + Math.random() * 5),
+      }));
+    } else {
+      return [
+        { time: "Week 1", power: Math.round(85 + Math.random() * 15) },
+        { time: "Week 2", power: Math.round(95 + Math.random() * 20) },
+        { time: "Week 3", power: Math.round(110 + Math.random() * 25) },
+        { time: "Week 4", power: Math.round(100 + Math.random() * 20) },
+      ];
+    }
+  }, [filter]);
     if (filter === "day") return raw;
     // Aggregate by hour for multi-day views
     const hourMap: Record<string, { total: number; count: number }> = {};
