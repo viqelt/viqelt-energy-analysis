@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Mail, Lock, ArrowRight, X, Phone, Send, CheckCircle2 } from "lucide-react";
+import { Mail, Lock, ArrowRight, X, Phone, Send, CheckCircle2, User } from "lucide-react";
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
   const [forgotInput, setForgotInput] = useState("");
@@ -80,6 +82,31 @@ export default function Login() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
+
+              {/* First Name + Last Name — Sign Up only */}
+              {!isLogin && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName" className="text-gray-700 text-sm font-medium">First Name</Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <Input id="firstName" type="text" placeholder="Youcef"
+                        value={firstName} onChange={(e) => setFirstName(e.target.value)}
+                        className="pl-10 h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName" className="text-gray-700 text-sm font-medium">Last Name</Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <Input id="lastName" type="text" placeholder="Benali"
+                        value={lastName} onChange={(e) => setLastName(e.target.value)}
+                        className="pl-10 h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700 text-sm font-medium">Email</Label>
                 <div className="relative">
