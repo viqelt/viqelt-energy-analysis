@@ -54,7 +54,7 @@ export default function AboutUs() {
             <div className="flex items-center gap-3 mb-3">
               <img
                 src="https://raw.githubusercontent.com/viqelt/viqelt-energy-analysis/main/logo.jpeg"
-                className="w-12 h-12 rounded-xl object-cover border-2 border-white/30"
+                 className="w-12 h-12 rounded-xl object-cover border-2 border-white/30 bg-white p-0.5"
               />
               <div>
                 <h1 className="text-white text-2xl md:text-3xl font-bold">VEAM</h1>
