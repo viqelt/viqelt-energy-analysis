@@ -32,8 +32,8 @@ import { getAIPredictions } from "@/lib/mockData";
 
 const SHEET_ID = "1g9XRplcjctpLaOnxmsy7C_0o8dc9Yy4-Zny6m7XSyXg";
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
-const GEMINI_KEY = "AIzaSyC2MptVx2ap5cSVM6r7fNdkPkvhqfgbmTs";
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
+const GEMINI_KEY = "AIzaSyBHhc9TPaxc0puyxM_GwIhJPuuLpAIE98A";
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
 
 function AnimatedValue({ target }: { target: number }) {
   const [count, setCount] = useState(0);
