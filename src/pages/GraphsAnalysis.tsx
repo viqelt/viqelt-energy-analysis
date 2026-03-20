@@ -16,9 +16,17 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { BarChart3, TrendingUp, PieChartIcon, Clock } from "lucide-react";
-import { getPeakHoursData, getEnergyDistribution } from "@/lib/mockData";
+import { getPeakHoursData } from "@/lib/mockData";
 
 type FilterType = "day" | "week" | "month";
+
+// Daily energy distribution by time period
+const timeDistribution = [
+  { name: "Night", period: "00:00 - 06:00", value: 12, color: "#4f46e5", icon: "🌙" },
+  { name: "Morning", period: "06:00 - 12:00", value: 28, color: "#f59e0b", icon: "🌅" },
+  { name: "Afternoon", period: "12:00 - 18:00", value: 35, color: "#ef4444", icon: "☀️" },
+  { name: "Evening", period: "18:00 - 24:00", value: 25, color: "#8b5cf6", icon: "🌆" },
+];
 
 export default function GraphsAnalysis() {
   const [filter, setFilter] = useState<FilterType>("day");
@@ -54,7 +62,6 @@ export default function GraphsAnalysis() {
   }, [filter]);
 
   const peakData = useMemo(() => getPeakHoursData(), [filter]);
-  const distribution = useMemo(() => getEnergyDistribution(), []);
 
   const filterButtons: { label: string; value: FilterType }[] = [
     { label: "Day", value: "day" },
@@ -132,9 +139,9 @@ export default function GraphsAnalysis() {
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "#fff",
-                    border: "none",
+                    border: "1px solid #e2e8f0",
                     borderRadius: "12px",
-                    boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
                     padding: "10px 14px",
                   }}
                   labelStyle={{ color: "#64748B", fontSize: 12, marginBottom: 4 }}
@@ -188,9 +195,9 @@ export default function GraphsAnalysis() {
                   <Tooltip
                     contentStyle={{
                       backgroundColor: "#fff",
-                      border: "none",
+                      border: "1px solid #e2e8f0",
                       borderRadius: "12px",
-                      boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+                      boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
                       padding: "10px 14px",
                     }}
                     formatter={(value: number) => [`${value} W`, "Consumption"]}
@@ -206,55 +213,61 @@ export default function GraphsAnalysis() {
           </CardContent>
         </Card>
 
-        {/* Pie Chart */}
+        {/* Pie Chart — Daily Time Distribution */}
         <Card className="border-0 shadow-md shadow-gray-100">
           <CardHeader className="pb-2 flex flex-row items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center">
               <PieChartIcon className="w-4 h-4 text-white" />
             </div>
             <div>
-              <CardTitle className="text-sm font-semibold text-gray-900">Energy Distribution</CardTitle>
-              <p className="text-xs text-gray-400">By region / device category</p>
+              <CardTitle className="text-sm font-semibold text-gray-900">Daily Energy Distribution</CardTitle>
+              <p className="text-xs text-gray-400">Consumption by time of day</p>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="h-[200px] w-full">
+            <div className="h-[180px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={distribution}
+                    data={timeDistribution}
                     cx="50%"
                     cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
+                    innerRadius={45}
+                    outerRadius={75}
                     paddingAngle={3}
                     dataKey="value"
                   >
-                    {distribution.map((entry, index) => (
+                    {timeDistribution.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
                   <Tooltip
                     contentStyle={{
                       backgroundColor: "#fff",
-                      border: "none",
+                      border: "1px solid #e2e8f0",
                       borderRadius: "12px",
-                      boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+                      boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
                       padding: "10px 14px",
                     }}
-                    formatter={(value: number) => [`${value}%`, "Share"]}
+                    formatter={(value: number, name: string) => [`${value}%`, name]}
                   />
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="space-y-2 mt-2">
-              {distribution.map((item) => (
-                <div key={item.name} className="flex items-center gap-2 text-sm">
+
+            {/* Legend */}
+            <div className="grid grid-cols-2 gap-2 mt-3">
+              {timeDistribution.map((item) => (
+                <div key={item.name} className="flex items-center gap-2 p-2 rounded-lg bg-gray-50">
                   <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
-                  <span className="font-medium text-gray-700 min-w-[70px]">{item.name}</span>
-                  <span className="text-gray-400">—</span>
-                  <span className="text-gray-500 text-xs">{item.devices}</span>
-                  <span className="ml-auto text-xs font-semibold text-gray-600">{item.value}%</span>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs">{item.icon}</span>
+                      <span className="text-xs font-semibold text-gray-700">{item.name}</span>
+                      <span className="text-xs font-bold ml-1" style={{ color: item.color }}>{item.value}%</span>
+                    </div>
+                    <p className="text-[10px] text-gray-400">{item.period}</p>
+                  </div>
                 </div>
               ))}
             </div>
