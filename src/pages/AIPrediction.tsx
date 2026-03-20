@@ -127,9 +127,9 @@ export default function AIPrediction() {
     }
   };
 
-  const colors = ["#6366f1", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b"];
+  // 🎨 Vivid colors — Red Green Blue Yellow Purple
+  const colors = ["#ef4444", "#22c55e", "#3b82f6", "#eab308", "#a855f7"];
 
-  // Use sheet data if available, otherwise use demo
   const bill = sheetData?.estimatedBill ?? predictions.predictedBill;
   const savings = sheetData?.estimatedSavings ?? predictions.totalSavings;
   const co2Kg = sheetData?.co2Kg ?? parseFloat((predictions.predictedBill / 4 * 0.5).toFixed(1));
@@ -148,7 +148,7 @@ export default function AIPrediction() {
 
       {/* Header */}
       <div className="relative rounded-2xl overflow-hidden h-40 md:h-48">
-        <img src="https://images.unsplash.com/photo-1516110833967-0b5716ca1387?w=1200&q=80" alt="AI" className="w-full h-full object-cover" />
+        <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1200&q=80" alt="AI" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/90 to-purple-900/70 flex items-center justify-between px-6 md:px-8">
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -158,7 +158,6 @@ export default function AIPrediction() {
             <h2 className="text-white text-xl md:text-2xl font-bold">Smart Predictions</h2>
             <p className="text-purple-200 text-sm mt-1">Optimize your energy usage with AI insights</p>
           </div>
-          {/* Analyze Button in header */}
           <Button onClick={analyzeSheet} disabled={loadingSheet}
             className="flex-shrink-0 h-10 px-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border border-white/30 rounded-xl font-medium text-sm transition-all">
             {loadingSheet
@@ -169,7 +168,6 @@ export default function AIPrediction() {
         </div>
       </div>
 
-      {/* Status */}
       {sheetData && (
         <div className="flex items-center gap-2 px-1">
           <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -224,7 +222,6 @@ export default function AIPrediction() {
         </Card>
       </div>
 
-      {/* Real Data Stats — only when sheet loaded */}
       {sheetData && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {[
@@ -282,7 +279,7 @@ export default function AIPrediction() {
         </CardContent>
       </Card>
 
-      {/* Top Devices Chart — only when sheet loaded */}
+      {/* Top Devices Chart */}
       {sheetData && (
         <Card className="border-0 shadow-md shadow-gray-100">
           <CardHeader className="pb-2 flex flex-row items-center gap-3">
@@ -312,12 +309,13 @@ export default function AIPrediction() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <div className="grid grid-cols-2 gap-2 mt-2">
+            {/* Legend — percentage قريبة من الاسم */}
+            <div className="grid grid-cols-2 gap-2 mt-3">
               {sheetData.topDevices.map((d, i) => (
-                <div key={d.name} className="flex items-center gap-2">
+                <div key={d.name} className="flex items-center gap-1.5 p-2 rounded-lg bg-gray-50">
                   <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: colors[i % colors.length] }} />
-                  <span className="text-xs text-gray-600 truncate">{d.name}</span>
-                  <span className="ml-auto text-xs font-semibold text-gray-500">{d.percentage}%</span>
+                  <span className="text-xs text-gray-700 font-medium truncate">{d.name}</span>
+                  <span className="text-xs font-bold flex-shrink-0" style={{ color: colors[i % colors.length] }}>{d.percentage}%</span>
                 </div>
               ))}
             </div>
