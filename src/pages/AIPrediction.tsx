@@ -364,7 +364,7 @@ Give short, practical tips to save energy and money. Max 3 bullet points.`;
             </div>
             <div>
               <CardTitle className="text-sm font-semibold text-gray-900">Gemini AI Insights</CardTitle>
-              <p className="text-xs text-gray-400">Powered by Google Gemini ✨</p>
+              <p className="text-xs text-gray-400">Powered by Google Gemini </p>
             </div>
             <span className="ml-auto text-xs font-semibold px-2 py-1 rounded-full bg-purple-50 text-purple-600">AI ✨</span>
           </CardHeader>
