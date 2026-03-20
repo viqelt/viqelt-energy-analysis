@@ -32,8 +32,7 @@ import { getAIPredictions } from "@/lib/mockData";
 
 const SHEET_ID = "1g9XRplcjctpLaOnxmsy7C_0o8dc9Yy4-Zny6m7XSyXg";
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
-const GEMINI_KEY = "AIzaSyBHhc9TPaxc0puyxM_GwIhJPuuLpAIE98A";
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+
 
 function AnimatedValue({ target }: { target: number }) {
   const [count, setCount] = useState(0);
@@ -97,13 +96,13 @@ export default function AIPrediction() {
 - CO2: ${data.co2Kg} kg/month
 Give short, practical tips to save energy and money. Max 3 bullet points.`;
 
-      const res = await fetch(GEMINI_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
-      });
-      const json = await res.json();
-      const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
+     const res = await fetch("/api/gemini", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+    const json = await res.json();
+    const text = json.text || "No response";
       setAiInsight(text);
     } catch {
       setAiInsight("Failed to get AI response.");
