@@ -24,7 +24,8 @@ export default function Login() {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      navigate("/dashboard");
+      sessionStorage.setItem("veam-logged-in", "true");
+navigate("/dashboard");
     }, 1200);
   };
 
