@@ -23,6 +23,7 @@ const navItems = [
   { path: "/dashboard/graphs", label: "Graphs & Analysis", icon: BarChart3 },
   { path: "/dashboard/ai", label: "AI Prediction", icon: Brain },
   { path: "/dashboard/notifications", label: "Notifications", icon: Bell },
+  { path: "/dashboard/ai-analysis", label: "AI Analysis", icon: Brain },
   { path: "/dashboard/help", label: "Help & Contact", icon: HelpCircle },
   { path: "/dashboard/about", label: "About Us", icon: Info },
 ];
