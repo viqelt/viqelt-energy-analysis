@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import HomePage from './pages/Home';
@@ -15,7 +16,14 @@ import AboutUs from './pages/AboutUs';
 
 const queryClient = new QueryClient();
 
-// 🔒 Protected Route — redirects to login if not authenticated
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isLoggedIn = sessionStorage.getItem("veam-logged-in") === "true";
   if (!isLoggedIn) return <Navigate to="/" replace />;
@@ -27,6 +35,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={
