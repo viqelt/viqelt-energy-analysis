@@ -30,8 +30,12 @@ const navItems = [
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showDeviceModal, setShowDeviceModal] = useState(false);
-  const [deviceCode, setDeviceCode] = useState("");
-  const [connected, setConnected] = useState(false);
+  const [deviceCode, setDeviceCode] = useState(() =>
+    localStorage.getItem("veam-device-code") || ""
+  );
+  const [connected, setConnected] = useState(() =>
+    localStorage.getItem("veam-device-connected") === "true"
+  );
   const [connecting, setConnecting] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("veam-dark") === "true";
@@ -64,6 +68,8 @@ export default function Dashboard() {
     setTimeout(() => {
       setConnecting(false);
       setConnected(true);
+      localStorage.setItem("veam-device-connected", "true");
+      localStorage.setItem("veam-device-code", deviceCode);
       setShowDeviceModal(false);
     }, 1500);
   };
@@ -71,6 +77,8 @@ export default function Dashboard() {
   const handleDisconnect = () => {
     setConnected(false);
     setDeviceCode("");
+    localStorage.removeItem("veam-device-connected");
+    localStorage.removeItem("veam-device-code");
   };
 
   return (
@@ -183,9 +191,7 @@ export default function Dashboard() {
               onClick={() => setDarkMode(!darkMode)}
               className="relative w-14 h-7 rounded-full transition-all duration-300 flex items-center px-1 focus:outline-none"
               style={{
-                background: darkMode
-                  ? "linear-gradient(135deg, #6366f1, #9333ea)"
-                  : "#e2e8f0",
+                background: darkMode ? "linear-gradient(135deg, #6366f1, #9333ea)" : "#e2e8f0",
                 boxShadow: darkMode ? "0 0 16px rgba(99,102,241,0.4)" : "none",
               }}
               title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
