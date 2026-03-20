@@ -1,6 +1,6 @@
 export const config = { runtime: "edge" };
 
-const GEMINI_KEY = "AIzaSyC2MptVx2ap5cSVM6r7fNdkPkvhqfgbmTs";
+const GEMINI_KEY = "AIzaSyBHhc9TPaxc0puyxM_GwIhJPuuLpAIE98A";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
 
 export default async function handler(req: Request) {
