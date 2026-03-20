@@ -138,7 +138,7 @@ export default function Dashboard() {
           </div>
           <Button
             variant="ghost"
-            onClick={() => navigate("/")}
+            onClick={() => { sessionStorage.removeItem("veam-logged-in"); navigate("/"); }}
             className="w-full justify-start gap-2 text-gray-500 dark:text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 dark:hover:text-red-400 text-sm h-9"
           >
             <LogOut className="w-4 h-4" />
