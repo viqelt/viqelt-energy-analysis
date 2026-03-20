@@ -13,7 +13,6 @@ import {
   Leaf,
   Car,
   Flame,
-  RefreshCw,
   BarChart2,
   Clock,
   Zap,
@@ -33,6 +32,8 @@ import { getAIPredictions } from "@/lib/mockData";
 
 const SHEET_ID = "1g9XRplcjctpLaOnxmsy7C_0o8dc9Yy4-Zny6m7XSyXg";
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+const GEMINI_KEY = "AIzaSyC2MptVx2ap5cSVM6r7fNdkPkvhqfgbmTs";
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
 
 function AnimatedValue({ target }: { target: number }) {
   const [count, setCount] = useState(0);
@@ -71,6 +72,8 @@ export default function AIPrediction() {
   const [loadingSheet, setLoadingSheet] = useState(false);
   const [sheetData, setSheetData] = useState<SheetAnalysis | null>(null);
   const [sheetError, setSheetError] = useState("");
+  const [aiInsight, setAiInsight] = useState("");
+  const [loadingAI, setLoadingAI] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -82,10 +85,38 @@ export default function AIPrediction() {
     return () => clearInterval(timer);
   }, [predictions.recommendations.length]);
 
+  const askGemini = async (data: SheetAnalysis) => {
+    setLoadingAI(true);
+    setAiInsight("");
+    try {
+      const prompt = `You are an energy expert. Analyze this home energy data and give 3 smart recommendations in simple English:
+- Daily energy: ${data.totalEnergy} kWh
+- Peak power: ${data.peakPower}W at ${data.peakTime}
+- Top device: ${data.topDevices[0]?.name} (${data.topDevices[0]?.percentage}%)
+- Monthly bill: ${data.estimatedBill} DA
+- CO2: ${data.co2Kg} kg/month
+Give short, practical tips to save energy and money. Max 3 bullet points.`;
+
+      const res = await fetch(GEMINI_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+      });
+      const json = await res.json();
+      const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
+      setAiInsight(text);
+    } catch {
+      setAiInsight("Failed to get AI response.");
+    } finally {
+      setLoadingAI(false);
+    }
+  };
+
   const analyzeSheet = async () => {
     setLoadingSheet(true);
     setSheetError("");
     setSheetData(null);
+    setAiInsight("");
     try {
       const res = await fetch(SHEET_URL);
       const text = await res.text();
@@ -119,7 +150,9 @@ export default function AIPrediction() {
         { icon: "💡", title: "Switch to LED Lighting", description: "LED bulbs consume 75% less energy than traditional bulbs.", savings: Math.round(estimatedBill * 0.05) },
       ];
 
-      setSheetData({ totalEnergy, avgPower, peakPower: peakRow.power, peakTime: peakRow.time, estimatedBill, estimatedSavings, co2Kg, carKm, topDevices, recommendations, rowCount: rows.length });
+      const result = { totalEnergy, avgPower, peakPower: peakRow.power, peakTime: peakRow.time, estimatedBill, estimatedSavings, co2Kg, carKm, topDevices, recommendations, rowCount: rows.length };
+      setSheetData(result);
+      askGemini(result);
     } catch {
       setSheetError("Failed to load data. Make sure the Google Sheet is public.");
     } finally {
@@ -127,7 +160,6 @@ export default function AIPrediction() {
     }
   };
 
-  // 🎨 Vivid colors — Red Green Blue Yellow Purple
   const colors = ["#ef4444", "#22c55e", "#3b82f6", "#eab308", "#a855f7"];
 
   const bill = sheetData?.estimatedBill ?? predictions.predictedBill;
@@ -309,7 +341,6 @@ export default function AIPrediction() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            {/* Legend — percentage قريبة من الاسم */}
             <div className="grid grid-cols-2 gap-2 mt-3">
               {sheetData.topDevices.map((d, i) => (
                 <div key={d.name} className="flex items-center gap-1.5 p-2 rounded-lg bg-gray-50">
@@ -319,6 +350,33 @@ export default function AIPrediction() {
                 </div>
               ))}
             </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* 🤖 Gemini AI Insights */}
+      {(aiInsight || loadingAI) && (
+        <Card className="border-0 shadow-md shadow-gray-100 overflow-hidden">
+          <div className="h-1.5 w-full bg-gradient-to-r from-purple-500 to-indigo-600" />
+          <CardHeader className="pb-3 flex flex-row items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+              <Brain className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-sm font-semibold text-gray-900">Gemini AI Insights</CardTitle>
+              <p className="text-xs text-gray-400">Powered by Google Gemini ✨</p>
+            </div>
+            <span className="ml-auto text-xs font-semibold px-2 py-1 rounded-full bg-purple-50 text-purple-600">AI ✨</span>
+          </CardHeader>
+          <CardContent>
+            {loadingAI ? (
+              <div className="flex items-center gap-3 py-2">
+                <div className="w-4 h-4 border-2 border-purple-300 border-t-purple-600 rounded-full animate-spin" />
+                <span className="text-sm text-gray-500">Gemini is analyzing your data...</span>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{aiInsight}</p>
+            )}
           </CardContent>
         </Card>
       )}
