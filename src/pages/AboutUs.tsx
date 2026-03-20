@@ -179,7 +179,7 @@ export default function AboutUs() {
       {/* Footer note */}
       <div className="text-center pb-2">
         <p className="text-xs text-gray-400">
-          VEAM — Voltage Energy Analysis & Monitor · Startup Project 2027
+          © 2026 VEAM — Voltage Energy Analysis & Monitor. All rights reserved.
         </p>
         
       </div>
