@@ -469,7 +469,7 @@ export default function HomePage() {
 
               <div className="flex gap-3 pt-1">
                 <Button
-                  onClick={() => alert("🚧 Demo only — Order feature coming soon!")}
+                  onClick={() => window.open("https://veam-store.vercel.app", "_blank")}
                   className="flex-1 h-11 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-medium shadow-lg shadow-indigo-200 transition-all duration-300"
                 >
                   <ShoppingCart className="w-4 h-4 mr-2" />
