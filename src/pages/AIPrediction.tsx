@@ -353,7 +353,7 @@ Give short, practical tips to save energy and money. Max 3 bullet points.`;
         </Card>
       )}
 
-      {/* 🤖 Gemini AI Insights */}
+      {/* 🤖 Groq AI Insights */}
       {(aiInsight || loadingAI) && (
         <Card className="border-0 shadow-md shadow-gray-100 overflow-hidden">
           <div className="h-1.5 w-full bg-gradient-to-r from-purple-500 to-indigo-600" />
@@ -362,8 +362,8 @@ Give short, practical tips to save energy and money. Max 3 bullet points.`;
               <Brain className="w-4 h-4 text-white" />
             </div>
             <div>
-              <CardTitle className="text-sm font-semibold text-gray-900">Gemini AI Insights</CardTitle>
-              <p className="text-xs text-gray-400">Powered by Google Gemini </p>
+              <CardTitle className="text-sm font-semibold text-gray-900">Groq AI Insights</CardTitle>
+              <p className="text-xs text-gray-400">Powered by Groq AI </p>
             </div>
             <span className="ml-auto text-xs font-semibold px-2 py-1 rounded-full bg-purple-50 text-purple-600">AI ✨</span>
           </CardHeader>
@@ -371,7 +371,7 @@ Give short, practical tips to save energy and money. Max 3 bullet points.`;
             {loadingAI ? (
               <div className="flex items-center gap-3 py-2">
                 <div className="w-4 h-4 border-2 border-purple-300 border-t-purple-600 rounded-full animate-spin" />
-                <span className="text-sm text-gray-500">Gemini is analyzing your data...</span>
+                <span className="text-sm text-gray-500">Groq is analyzing your data...</span>
               </div>
             ) : (
               <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{aiInsight}</p>
