@@ -1,10 +1,9 @@
 export const config = { runtime: "edge" };
 
-const GEMINI_KEY = process.env.GEMINI_API_KEY ?? ""; // ✅ آمن
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
+const GROQ_KEY = process.env.GROQ_API_KEY ?? "";
+const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 export default async function handler(req: Request) {
-  // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, {
       status: 204,
@@ -34,19 +33,20 @@ export default async function handler(req: Request) {
       });
     }
 
-    // Timeout after 25 seconds to stay under Vercel's 30s edge limit
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 25000);
 
-    const res = await fetch(GEMINI_URL, {
+    const res = await fetch(GROQ_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${GROQ_KEY}`,
+      },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          maxOutputTokens: 2048,
-          temperature: 0.7,
-        },
+        model: "llama-3.3-70b-versatile",
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 2048,
+        temperature: 0.7,
       }),
       signal: controller.signal,
     });
@@ -55,9 +55,9 @@ export default async function handler(req: Request) {
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error("Gemini API error:", res.status, errText);
+      console.error("Groq API error:", res.status, errText);
       return new Response(
-        JSON.stringify({ text: "Gemini API returned an error. Please try again." }),
+        JSON.stringify({ text: "AI service returned an error. Please try again." }),
         {
           status: 502,
           headers: {
@@ -69,8 +69,7 @@ export default async function handler(req: Request) {
     }
 
     const data = await res.json();
-    const text =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ?? "No response from AI.";
+    const text = data.choices?.[0]?.message?.content ?? "No response from AI.";
 
     return new Response(JSON.stringify({ text }), {
       status: 200,
